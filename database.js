@@ -8,6 +8,7 @@ const connect = async () => {
     const connected = await mongoose.connect(
       uri,
       {
+        dbName: "orizonAPI",
         useUnifiedTopology: true,
         useNewUrlParser: true,
       }
