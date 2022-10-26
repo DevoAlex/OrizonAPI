@@ -10,7 +10,11 @@ const orderSchema = new mongoose.Schema({
     users: {
         orderedBy: userSchema,
         required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 })
 
-module.exports = mongoose.model("orders", orderSchema)
+module.exports = mongoose.model("Order", orderSchema)
