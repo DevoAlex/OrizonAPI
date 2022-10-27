@@ -12,6 +12,11 @@ const userList = async (req, res) => {
 const getSingleUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: `No product with id ${req.params.productId}` });
+    }
     res.status(200).json({ success: true, data: user });
   } catch (err) {
     res.status(400).json({ success: false, message: err });
@@ -27,7 +32,7 @@ const postUser = async (req, res) => {
 
   try {
     const savedUser = await user.save();
-    res.status(200).json({ success: true, data: savedUser });
+    res.status(201).json({ success: true, data: savedUser });
   } catch (err) {
     res.status(400).json({ success: false, message: err });
   }
@@ -43,7 +48,8 @@ const updateUser = async (req, res) => {
           lastName: req.body.lastName,
           email: req.body.email,
         },
-      }
+      },
+      { upsert: true }
     );
     res.status(200).json({
       success: true,
@@ -58,7 +64,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const removedUser = await User.remove({ _id: req.params.userId });
-    res.json({
+    res.status(200).json({
       success: true,
       message: `Item with id ${req.params.userId} deleted`,
       data: removedUser,
@@ -68,10 +74,10 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { 
-    userList,
-    getSingleUser,
-    postUser,
-    updateUser,
-    deleteUser
- };
+module.exports = {
+  userList,
+  getSingleUser,
+  postUser,
+  updateUser,
+  deleteUser,
+};

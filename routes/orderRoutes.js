@@ -1,23 +1,27 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
+const {
+  getOrders,
+  getSingleOrder,
+  postOrder,
+  updateOrder,
+  deleteOrder,
+} = require("../controllers/ordersControllers");
 
-router.get('/', (req, res) => {
-    res.send ("We're on orders")
-})
+//Get back all orders
+router.get("/", getOrders);
 
-router.post('/', (req, res) => {
-    
-})
-router.put('/:id', (req, res) => {
-    
-})
-router.delete('/:id', (req, res) => {
-    
-})
+//get back a single order
+router.get("/:orderId", getSingleOrder);
 
-// router.post('/', (req, res) => {
-//     console.log(req.body)
-// })
+//Post a new order
+router.post("/", postOrder);
 
-module.exports = router
+//Update an order
+router.patch("/:orderId", updateOrder);
+
+//Delete an order
+router.delete("/:orderId", deleteOrder);
+
+module.exports = router;
