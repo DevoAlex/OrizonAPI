@@ -1,6 +1,8 @@
 const Order = require("../models/order");
 const User = require("../models/user");
 const Product = require("../models/product");
+const endOfDay = require('date-fns/endOfDay')
+const startOfDay = require('date-fns/startOfDay')
 
 const getOrders = async (req, res) => {
   try {
@@ -16,6 +18,7 @@ const getSingleOrder = async (req, res) => {
     const order = await Order.findById(req.params.orderId)
       .populate("product")
       .populate("user");
+      console.log(order.date)
     if (!order) {
       return res
         .status(404)
@@ -26,6 +29,22 @@ const getSingleOrder = async (req, res) => {
     res.status(400).json({ success: false, message: err });
   }
 };
+
+const getOrderByDate = async(req, res) => {
+  try{
+   const paramDate = new Date(req.params.orderDate)
+   
+   const filterDate = await Order.find({createdOn : {$gt: startOfDay(paramDate), $lt: endOfDay(paramDate)}})
+   if (!filterDate) {
+    return res
+      .status(404)
+      .json({ error: `No order with date ${req.params.orderDate}` });
+  }
+  res.status(200).json({ success: true, data: filterDate });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err });
+  }
+}
 
 const postOrder = async (req, res) => {
   try {
@@ -38,7 +57,9 @@ const postOrder = async (req, res) => {
       const order = new Order({
         product: item,
         user: req.body.user,
+        createdOn: new Date()
       });
+      
       for (let i = 0; i < productFound.length; i++) {
         item.push(productFound[i]._id);
       }
@@ -92,6 +113,7 @@ const deleteOrder = async (req, res) => {
 module.exports = {
   getOrders,
   getSingleOrder,
+  getOrderByDate,
   postOrder,
   updateOrder,
   deleteOrder,

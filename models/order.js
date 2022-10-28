@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    date: {
+    createdOn: {
         type: Date,
         default: Date.now
     }
