@@ -11,9 +11,8 @@ const userRoute = require("./routes/userRoutes");
 const productRoute = require("./routes/productRoutes");
 const orderRoute = require("./routes/orderRoutes");
 
-
 //Middlewares
-app.use(helmet())
+app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/users", userRoute);
@@ -21,14 +20,14 @@ app.use("/products", productRoute);
 app.use("/orders", orderRoute);
 
 //sanitize filter
-mongoose.set("sanitizeFilter", true)
+mongoose.set("sanitizeFilter", true);
 
 //Basic routes
 app.get("/", (req, res) => {
-  res.status(200).json({success: true, message: "Welcome to orizon API"});
+  res.status(200).json({ success: true, message: "Welcome to orizon API" });
 });
 app.get("*", (req, res) => {
-  res.status(404).json({success: false, message: "404 not found"});
+  res.status(404).json({ success: false, message: "404 not found" });
 });
 
 connect();

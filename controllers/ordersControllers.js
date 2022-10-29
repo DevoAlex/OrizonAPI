@@ -3,7 +3,6 @@ const User = require("../models/user");
 const Product = require("../models/product");
 const endOfDay = require("date-fns/endOfDay");
 const startOfDay = require("date-fns/startOfDay");
-const format = require("date-fns/format");
 
 const getOrders = async (req, res) => {
   try {
@@ -44,12 +43,27 @@ const getOrderByDate = async (req, res) => {
         },
       },
     ]);
-    if (!filterDate) {
+    if (filterDate.length === 0) {
       return res
         .status(404)
         .json({ error: `No order with date ${req.params.orderDate}` });
     }
     res.status(200).json({ success: true, data: filterDate });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err });
+  }
+};
+
+const getOrderByProduct = async (req, res) => {
+  try {
+    const filterProduct = await Order.find({ product: req.params.productId });
+    console.log(filterProduct);
+    if (filterProduct.length === 0) {
+      return res
+        .status(404)
+        .json({ error: `No order with product ${req.params.productId}` });
+    }
+    res.status(200).json({ success: true, data: filterProduct });
   } catch (err) {
     res.status(400).json({ success: false, message: err });
   }
@@ -121,6 +135,7 @@ module.exports = {
   getOrders,
   getSingleOrder,
   getOrderByDate,
+  getOrderByProduct,
   postOrder,
   updateOrder,
   deleteOrder,

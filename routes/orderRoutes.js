@@ -5,6 +5,7 @@ const {
   getOrders,
   getSingleOrder,
   getOrderByDate,
+  getOrderByProduct,
   postOrder,
   updateOrder,
   deleteOrder,
@@ -16,7 +17,11 @@ router.get("/", getOrders);
 //get back a single order
 router.get("/:orderId", getSingleOrder);
 
-router.get('/createdOn/:orderDate', getOrderByDate)
+//get back orders of a certain date
+router.get("/createdOn/:orderDate", getOrderByDate);
+
+//get back orders wich contains a product
+router.get("/containsProduct/:productId", getOrderByProduct);
 
 //Post a new order
 router.post("/", postOrder);
