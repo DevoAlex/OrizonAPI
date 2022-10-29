@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/DevoAlex/OrizonAPI#readme",
   "devDependencies": {
+    "jest": "^29.2.2",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.1"
   },
   "dependencies": {
     "body-parser": "^1.20.1",

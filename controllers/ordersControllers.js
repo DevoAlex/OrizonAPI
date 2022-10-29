@@ -18,7 +18,6 @@ const getSingleOrder = async (req, res) => {
     const order = await Order.findById(req.params.orderId)
       .populate("product")
       .populate("user");
-    console.log(order.date);
     if (!order) {
       return res
         .status(404)
@@ -35,7 +34,6 @@ const getOrderByDate = async (req, res) => {
     const paramDate = new Date(req.params.orderDate);
     const startDay = startOfDay(paramDate);
     const endDay = endOfDay(paramDate);
-    console.log(startDay, endDay);
     const filterDate = await Order.aggregate([
       {
         $match: {
@@ -57,7 +55,6 @@ const getOrderByDate = async (req, res) => {
 const getOrderByProduct = async (req, res) => {
   try {
     const filterProduct = await Order.find({ product: req.params.productId });
-    console.log(filterProduct);
     if (filterProduct.length === 0) {
       return res
         .status(404)

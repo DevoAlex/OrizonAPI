@@ -10,6 +10,10 @@ const { default: mongoose } = require("mongoose");
 const userRoute = require("./routes/userRoutes");
 const productRoute = require("./routes/productRoutes");
 const orderRoute = require("./routes/orderRoutes");
+const morgan = require("morgan");
+
+//logger
+app.use(morgan("dev"))
 
 //Middlewares
 app.use(helmet());
