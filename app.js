@@ -1,19 +1,19 @@
 const express = require("express");
-const { connect, disconnect } = require("./database");
+const { connect } = require("./database");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { default: helmet } = require("helmet");
 const { default: mongoose } = require("mongoose");
+const morgan = require("morgan");
 
 //Import routes
 const userRoute = require("./routes/userRoutes");
 const productRoute = require("./routes/productRoutes");
 const orderRoute = require("./routes/orderRoutes");
-const morgan = require("morgan");
 
 //logger
-app.use(morgan("dev"))
+app.use(morgan("dev"));
 
 //Middlewares
 app.use(helmet());
@@ -30,12 +30,10 @@ mongoose.set("sanitizeFilter", true);
 app.get("/", (req, res) => {
   res.status(200).json({ success: true, message: "Welcome to orizon API" });
 });
+
 app.get("*", (req, res) => {
   res.status(404).json({ success: false, message: "404 not found" });
 });
 
-connect();
 
-app.listen(3000, () => {
-  console.log("Server is live");
-});
+module.exports = app

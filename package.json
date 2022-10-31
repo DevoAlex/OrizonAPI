@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "test": "NODE_ENV=test jest --watchAll --verbose --coverage"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/DevoAlex/OrizonAPI#readme",
   "devDependencies": {
     "jest": "^29.2.2",
+    "mongodb-memory-server": "^8.9.4",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "supertest": "^6.3.1"
