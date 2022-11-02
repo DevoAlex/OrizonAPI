@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const { connect, disconnect } = require("./database");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { default: helmet } = require("helmet");
@@ -34,5 +35,8 @@ app.get("*", (req, res) => {
   res.status(404).json({ success: false, message: "404 not found" });
 });
 
+// connect();
 
-module.exports = app
+// app.listen(3000, () => console.log("Server is listening on port 3000"));
+
+module.exports = app;

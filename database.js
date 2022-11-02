@@ -27,7 +27,7 @@ const disconnect = async () => {
   try {
     await mongoose.connection.close();
     if (mongoMock) {
-      await mongoMock.stop()
+      await mongoMock.stop();
     }
   } catch (err) {
     console.log(err);

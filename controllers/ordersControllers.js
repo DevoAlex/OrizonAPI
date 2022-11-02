@@ -54,7 +54,9 @@ const getOrderByDate = async (req, res) => {
 
 const getOrderByProduct = async (req, res) => {
   try {
-    const filterProduct = await Order.find({ product: req.params.productId });
+    const filterProduct = await Order.find({ product: req.params.productId })
+      .populate("product")
+      .populate("user");
     if (filterProduct.length === 0) {
       return res
         .status(404)

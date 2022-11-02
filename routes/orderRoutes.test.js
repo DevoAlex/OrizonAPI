@@ -6,7 +6,7 @@ const request = supertest(app);
 
 const dummyOrder = new Order({
   product: "6320d412764e84089ed2789e",
-  user: "6320d412764e84089ed2789e",
+  user: "6359990c7ecb2c4021fa7ef7",
   createdOn: "2022-09-18",
 });
 
@@ -36,7 +36,7 @@ describe("Orders endpoints", () => {
                 __v: expect.any(Number),
                 _id: expect.any(String),
                 product: expect.any(Array),
-                user: expect.any(String),
+                user: expect.any(Object),
                 createdOn: expect.any(String),
               }),
             ]),
@@ -48,7 +48,7 @@ describe("Orders endpoints", () => {
 
   test("GET an order by ID", async () => {
     return await request
-      .get(`/products/${testId}`)
+      .get(`/orders/${testId}`)
       .expect("content-type", "application/json; charset=utf-8")
       .expect(200)
       .then((response) => {
@@ -57,9 +57,9 @@ describe("Orders endpoints", () => {
             data: expect.objectContaining({
               __v: expect.any(Number),
               _id: expect.any(String),
-              product: expect.any(String),
-              user: expect.any(String),
-              createdOn: expext.any(String),
+              product: expect.any(Array),
+              user: expect.any(Object),
+              createdOn: expect.any(String),
             }),
             success: expect.any(Boolean),
           })
@@ -70,7 +70,7 @@ describe("Orders endpoints", () => {
   test("GET a 404 error if order not found", async () => {
     const notFoundId = "6320d412764e84089ed2789e";
     return await request
-      .get(`/products/${notFoundId}`)
+      .get(`/orders/${notFoundId}`)
       .expect("content-type", "application/json; charset=utf-8")
       .expect(404);
   });
@@ -78,7 +78,7 @@ describe("Orders endpoints", () => {
   test("GET an order by date", async () => {
     const testDate = "2022-09-18";
     return await request
-      .get(`/orders/${testDate}`)
+      .get(`/orders/createdOn/${testDate}`)
       .expect("content-type", "application/json; charset=utf-8")
       .expect(200)
       .then((response) => {
@@ -102,19 +102,21 @@ describe("Orders endpoints", () => {
   test("GET an order by product", async () => {
     const testProduct = "6320d412764e84089ed2789e";
     return await request
-      .get(`/products/${testProduct}`)
+      .get(`/orders/containsProduct/${testProduct}`)
       .expect("content-type", "application/json; charset=utf-8")
       .expect(200)
       .then((response) => {
         expect(response.body).toEqual(
           expect.objectContaining({
-            data: expect.objectContaining({
-              __v: expect.any(Number),
-              _id: expect.any(String),
-              product: expect.any(String),
-              user: expect.any(String),
-              createdOn: expext.any(String),
-            }),
+            data: expect.arrayContaining([
+              expect.objectContaining({
+                __v: expect.any(Number),
+                _id: expect.any(String),
+                product: expect.any(Array),
+                user: expect.any(Object),
+                createdOn: expect.any(String),
+              }),
+            ]),
             success: expect.any(Boolean),
           })
         );
@@ -124,7 +126,7 @@ describe("Orders endpoints", () => {
   test("POST a new order", async () => {
     const testOrder = {
       product: "6320d412764e84089ed2789e",
-      user: "6320d412764e84089ed2789e",
+      user: "6359990c7ecb2c4021fa7ef7",
       createdOn: "2022-09-18",
     };
     return await request
@@ -136,11 +138,10 @@ describe("Orders endpoints", () => {
         expect(response.body).toEqual(
           expect.objectContaining({
             data: expect.objectContaining({
-              __v: expect.any(Number),
               _id: expect.any(String),
-              product: expect.any(String),
+              product: expect.any(Array),
               user: expect.any(String),
-              createdOn: expext.any(String),
+              createdOn: expect.any(String),
             }),
             success: expect.any(Boolean),
           })
@@ -155,7 +156,7 @@ describe("Orders endpoints", () => {
       createdOn: "2022-09-18",
     };
     return await request
-      .patch(`/products/${testId}`)
+      .patch(`/orders/${testId}`)
       .send(testOrder)
       .expect("content-type", "application/json; charset=utf-8")
       .expect(200)
@@ -173,7 +174,7 @@ describe("Orders endpoints", () => {
 
   test("DELETE an order", async () => {
     return await request
-      .delete(`/products/${testId}`)
+      .delete(`/orders/${testId}`)
       .expect("content-type", "application/json; charset=utf-8")
       .expect(200)
       .then((response) => {
